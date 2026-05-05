@@ -2,3 +2,6 @@
 /tools/tone_tool/cmd/ffmpeg-64 filter=lfs diff=lfs merge=lfs -text
 /arcs-sdk/tools/tone_tool/cmd/ffmpeg-64 filter=lfs diff=lfs merge=lfs -text
 /arcs-sdk/samples/libraries/sqlite3/tools/image/fatfs_db.bin filter=lfs diff=lfs merge=lfs -text
+/arcs-sdk/samples/algorithms/spv/res/algo_emmc.bin filter=lfs diff=lfs merge=lfs -text
+/arcs-sdk/samples/algorithms/translation/res/algo_emmc.bin filter=lfs diff=lfs merge=lfs -text
+/arcs-sdk/samples/algorithms/xtts/res/algo_emmc.bin filter=lfs diff=lfs merge=lfs -text
