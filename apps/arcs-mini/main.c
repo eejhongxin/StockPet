@@ -29,6 +29,11 @@
 #include "miniapp.h"
 #include "app_ble_common.h"
 
+#ifdef CONFIG_STOCK_WATCH
+#include "stock/service_stock.h"
+#include "stock/service_stock_chart.h"
+#endif
+
 /* 被动网络提示的单次触发状态。 */
 static bool s_netcfg_tone_latched = false;
 static bool s_cloud_ever_connected = false;
@@ -272,6 +277,15 @@ int main(int argc, char **argv)
     service_button_init();
     service_image_init();
     service_camera_init();
+
+#ifdef CONFIG_STOCK_WATCH
+    if (service_stock_init() != 0) {
+        LOGE("Stock service initialization failed");
+    }
+    if (service_stock_chart_init() != 0) {
+        LOGE("Stock chart initialization failed");
+    }
+#endif
 
     app_button_init();
 

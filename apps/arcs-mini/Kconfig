@@ -17,6 +17,15 @@ config SHENGSHENG_AVATAR
       pixel pet. Keep the normal voice session, subtitles and system controls.
       This option does not change the acoustic wake-word model or cloud persona.
 
+config STOCK_WATCH
+    bool "Stock quotes on Shengsheng's idle home screen"
+    depends on SHENGSHENG_AVATAR
+    default n
+    help
+      Show Espressif (688018) and NVIDIA (NVDA) quotes using a public feed.
+      Refresh every 15 seconds during regular-hours schedules, otherwise
+      every 60 seconds. US quotes may be delayed. No alerts or trading.
+
 config CP_FIRMWARE_COMPAT
     bool "Embed CP PSRAM range"
     default y

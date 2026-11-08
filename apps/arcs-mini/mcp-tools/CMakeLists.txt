@@ -26,3 +26,8 @@ listenai_include_directories(
 if(CONFIG_MINIAPP)
     listenai_library_sources(mcp_tool_miniapp.c mcp_tool_miniapp_control.c)
 endif()
+
+if(CONFIG_STOCK_WATCH)
+    listenai_library_sources(mcp_tool_stock.c)
+    listenai_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../stock)
+endif()
