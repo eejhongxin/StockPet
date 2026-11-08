@@ -2,6 +2,9 @@
 
 目标是“你好生生”唤醒、常驻宠物形象以及语音对话；查询资料与电脑 Codex 接入作为后续阶段。
 
+新增的股票展示版本见 [生生股票盯盘](stock-watch.md)：待机显示乐鑫科技和 NVDA，
+说话时回到语音界面。本轮仅看行情，不启用提醒。
+
 ## 当前实现
 
 `apps/arcs-mini/shengsheng.conf` 启用 Mini3 专用的 `CONFIG_SHENGSHENG_AVATAR`。

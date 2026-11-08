@@ -28,6 +28,10 @@
 #include "button_factory_reset.h"
 #include "service_power_policy.h"
 
+#ifdef CONFIG_STOCK_WATCH
+#include "stock/stock_home.h"
+#endif
+
 /* ==================== 模块配置与状态 ==================== */
 
 #define APP_BUTTON_PRIMARY_ID 0U
@@ -193,6 +197,40 @@ static bool app_button_intercept_alarm_action(voice_msg_button_action_t action)
         return true;
     }
 }
+
+#ifdef CONFIG_STOCK_WATCH
+/* 行情页空闲时复用双击/三击；其他场景保留拍照和信息页操作。 */
+static bool app_button_intercept_stock_action(voice_msg_button_action_t action)
+{
+    service_power_policy_state_t power_state;
+
+    if (action != VOICE_MSG_BUTTON_ACTION_DOUBLE_CLICK &&
+        action != VOICE_MSG_BUTTON_ACTION_TRIPLE_CLICK) {
+        return false;
+    }
+
+#ifdef CONFIG_OTA
+    ota_state_e ota_state = ota_manager_get_state();
+    if (ota_state == OTA_STATE_CHECKING || ota_state == OTA_STATE_UPDATING ||
+        ota_state == OTA_STATE_PACKAGE_INFO) {
+        return false;
+    }
+#endif
+
+    power_state = service_power_policy_get_state();
+    if (lisa_ui_nav_scr_get_top_id() != LISA_UI_NAV_SCR_ID_HOME ||
+        button_camera_preview_is_busy() ||
+        voice_intent_contains(INTENT_PHOTO_FLOW) ||
+        voice_intent_contains(INTENT_VOICE_SESSION) ||
+        power_state == VOICE_MSG_POWER_POLICY_STATE_HIBERNATE ||
+        power_state == VOICE_MSG_POWER_POLICY_STATE_SHUTDOWN_PENDING) {
+        return false;
+    }
+
+    /* UI 模块只投递操作，不在消息总线线程访问 LVGL。 */
+    return stock_home_handle_button((uint8_t)action);
+}
+#endif
 
 /* 判断当前按键动作是否允许被“云端不可用”信息页拦截。 */
 static bool app_button_cloud_info_can_redirect_action(voice_msg_button_action_t action)
@@ -457,6 +495,13 @@ static void app_button_on_changed(void *unused, uint32_t msg_id, void *data,
         if (evt->action == VOICE_MSG_BUTTON_ACTION_CLICK) {
             (void)miniapp_button_click("function");
         }
+        return;
+    }
+#endif
+
+#ifdef CONFIG_STOCK_WATCH
+    if (app_button_intercept_stock_action(evt->action)) {
+        LISA_LOGI(TAG, "Stock home consumed button action=%d", evt->action);
         return;
     }
 #endif

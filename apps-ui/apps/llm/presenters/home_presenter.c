@@ -24,6 +24,10 @@
 #include "voice_cloud.h"
 #include "display/lv_img_net_loader.h"
 
+#ifdef CONFIG_STOCK_WATCH
+#include "stock_home.h"
+#endif
+
 #ifdef LISA_UI_PLATFORM_ARCS
 #include "app_datas.h"
 #include "lisa_kv.h"
@@ -2932,6 +2936,10 @@ static int home_nav_scr_open(const struct lisa_ui_nav_scr *scr, void **data)
     model_camera_preview_cb_register(&home_camera_preview_presenter_cbs, scr_data);
     model_sd_music_sync_cb_register(&model_sd_music_sync_cbs, scr_data);
 
+#ifdef CONFIG_STOCK_WATCH
+    stock_home_init(scr_data);
+#endif
+
     return 0;
 }
 
@@ -3020,6 +3028,9 @@ static int home_nav_scr_close(const struct lisa_ui_nav_scr *scr, void *data)
 
     struct home_nav_scr_data *scr_data = (struct home_nav_scr_data *)data;
     if (scr_data) {
+#ifdef CONFIG_STOCK_WATCH
+        stock_home_deinit(scr_data);
+#endif
         home_handle_activity(scr_data);
         home_stop_oneshot_emoji(scr_data);
         if (scr_data->anim_timer != NULL) {

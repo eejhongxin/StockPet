@@ -31,6 +31,9 @@ struct home_nav_scr_data {
     lv_timer_t *img_hide_timer;
     lv_timer_t *battery_query_timer;
     lv_timer_t *standby_text_timer;
+#ifdef CONFIG_STOCK_WATCH
+    lv_timer_t *stock_timer;
+#endif
     uint32_t standby_text_index;
     lv_img_dsc_t img;
     lv_img_dsc_t *net_img;

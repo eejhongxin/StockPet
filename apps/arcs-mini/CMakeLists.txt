@@ -43,6 +43,11 @@ if(CONFIG_SHENGSHENG_AVATAR)
     target_include_directories(lisa_ui_app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/companion)
 endif()
 
+if(CONFIG_STOCK_WATCH)
+    target_sources(lisa_ui_app PRIVATE stock/stock_home.c)
+    target_include_directories(lisa_ui_app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/stock)
+endif()
+
 add_subdirectory(tone)
 add_subdirectory(services)
 add_subdirectory(button)

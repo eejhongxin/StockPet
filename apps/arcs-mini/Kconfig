@@ -20,6 +20,9 @@ config SHENGSHENG_AVATAR
 config STOCK_WATCH
     bool "Stock quotes on Shengsheng's idle home screen"
     depends on SHENGSHENG_AVATAR
+    select LV_FONT_MONTSERRAT_12
+    select LV_FONT_MONTSERRAT_24
+    select LV_FONT_MONTSERRAT_32
     default n
     help
       Show Espressif (688018) and NVIDIA (NVDA) quotes using a public feed.
