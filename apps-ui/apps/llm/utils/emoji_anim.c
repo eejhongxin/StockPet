@@ -12,6 +12,10 @@
 
 #include "romfs/romfs.h"
 
+#ifdef CONFIG_SHENGSHENG_AVATAR
+#include "shengsheng_avatar.h"
+#endif
+
 #define EMOJI_CONFIG_PATH   "/emoji.json"
 #define EMOJI_DEFAULT_DELAY 100
 #define EMOJI_MAX_COUNT     64
@@ -654,6 +658,9 @@ static int emoji_anim_config_parse(const uint8_t *json_data, uint32_t json_size)
 
 const lisa_ui_anim_ext_config_t *emoji_anim_get_by_name(const char *name)
 {
+#ifdef CONFIG_SHENGSHENG_AVATAR
+    return shengsheng_avatar_get(name);
+#else
     int idx;
     const lisa_ui_anim_ext_config_t *anim_cfg;
 
@@ -671,22 +678,34 @@ const lisa_ui_anim_ext_config_t *emoji_anim_get_by_name(const char *name)
 
     LISA_UI_LOGE("Invalid emoji name: %s, use fallback instead", name);
     return s_fallback_anim != NULL ? s_fallback_anim : &s_empty_anim;
+#endif
 }
 
 int emoji_anim_get_offset_y(const char *name)
 {
     (void)name;
+#ifdef CONFIG_SHENGSHENG_AVATAR
+    return -12;
+#else
     return s_emoji_offset_y;
+#endif
 }
 
 int emoji_anim_get_offset_x(const char *name)
 {
     (void)name;
+#ifdef CONFIG_SHENGSHENG_AVATAR
+    return 0;
+#else
     return s_emoji_offset_x;
+#endif
 }
 
 int emoji_anim_has_name(const char *name)
 {
+#ifdef CONFIG_SHENGSHENG_AVATAR
+    return name != NULL && name[0] != '\0';
+#else
     int idx;
 
     if (name == NULL || name[0] == '\0') {
@@ -699,6 +718,7 @@ int emoji_anim_has_name(const char *name)
     }
 
     return emoji_anim_get_by_index((uint32_t)idx, 0) != NULL;
+#endif
 }
 
 int emoji_anim_get_loaded_count(void)
@@ -732,6 +752,9 @@ int emoji_anim_is_alias(int index)
 
 int lisa_ui_anim_init(uint32_t flash_addr, uint32_t flash_size)
 {
+#ifdef CONFIG_SHENGSHENG_AVATAR
+    LISA_UI_LOGI("Shengsheng native voice avatar enabled");
+#endif
     int ret = 0;
     struct romfs *fs = NULL;
     uint8_t *config_data = NULL;

@@ -8,6 +8,15 @@ orsource "../../apps-ui/Kconfig"
 
 rsource "miniapp/Kconfig"
 
+config SHENGSHENG_AVATAR
+    bool "Shengsheng pixel companion on the voice home screen"
+    depends on APPLICATION_UI && BOARD_ARCS_MINI3
+    default n
+    help
+      Replace the voice assistant's home animations with the Shengsheng
+      pixel pet. Keep the normal voice session, subtitles and system controls.
+      This option does not change the acoustic wake-word model or cloud persona.
+
 config CP_FIRMWARE_COMPAT
     bool "Embed CP PSRAM range"
     default y

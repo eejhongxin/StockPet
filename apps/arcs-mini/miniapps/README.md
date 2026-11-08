@@ -1,5 +1,28 @@
 # Mini3 宠物小应用
 
+## 生生语音桌面
+
+原生桌面皮肤与下面的养成小应用是两个入口。生生语音桌面随固件启动，
+使用像素宠物表现待机、聆听、思考、说话和情绪，保留原语音助手的对话、字幕、
+音乐、闹钟和按键逻辑。功能键单击按原桌面规则开始／停止语音交互。
+此入口没有运行 Lua 小应用，因此不会进入限制闲聊和其他工具的小应用会话模式。
+
+```sh
+source ./arcs-sdk/env.sh
+./build.sh -S ./apps/arcs-mini -B build-shengsheng-mini3 \
+  -DBOARD=arcs_mini3 -DCONFIG_FILES=shengsheng.conf
+bash adb_download.sh -S res/arcs-mini3 -B build-shengsheng-mini3 app
+```
+
+仅 Mini3 可启用 `CONFIG_SHENGSHENG_AVATAR`，默认固件仍使用原皮肤。
+此配置只更换桌面形象和显示名称，**不会自动修改声学唤醒词或云端人设**。
+目标唤醒词是“你好生生”；在安装其专用模型之前，仍需使用设备当前提示的原唤醒词，
+或单击功能键发起对话。模型制作和后续 Codex 中转方案见
+[生生集成说明](../../../docs/shengsheng.md)。
+
+下方养成小应用沿用 `/miniapp/tamagotchi.lua` 和原存档，宠物名字统一为生生。
+养成进度与原生语音桌面的动画尚未联动；运行养成小应用期间仍沿用小应用的语音范围限制。
+
 ## 拓麻风格电子宠物
 
 `tamagotchi.lua` 使用单色 LCD 配色和逐像素精灵，提供孵化、成长、喂食、清洁、

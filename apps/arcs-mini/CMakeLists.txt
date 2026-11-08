@@ -38,6 +38,11 @@ if (DEFINED CONFIG_APPLICATION_UI)
     add_subdirectory(${PROJECT_TOP_DIR}/apps-ui ${CMAKE_BINARY_DIR}/apps-ui)
 endif()
 
+if(CONFIG_SHENGSHENG_AVATAR)
+    target_sources(lisa_ui_app PRIVATE companion/shengsheng_avatar.c)
+    target_include_directories(lisa_ui_app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/companion)
+endif()
+
 add_subdirectory(tone)
 add_subdirectory(services)
 add_subdirectory(button)
